@@ -1,4 +1,4 @@
-package connection
+package metaorm
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Postgres returns a new database connection for Postgres.
 func Postgres(host, port, username, password, databaseName string, silent ...bool) (*database.DB, error) {
 	gormDB, err := gorm.Open(
 		postgres.Open(
@@ -21,4 +22,9 @@ func Postgres(host, port, username, password, databaseName string, silent ...boo
 		return nil, err
 	}
 	return database.New(gormDB), nil
+}
+
+// DefaultPostgres returns a new database connection for Postgres using the environment variables.
+func DefaultPostgres() (*database.DB, error) {
+	return Postgres(METAORM_HOST.String(), METAORM_PORT.String(), METAORM_USERNAME.String(), METAORM_PASSWORD.String(), METAORM_DATABASE.String())
 }

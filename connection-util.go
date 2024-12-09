@@ -1,4 +1,4 @@
-package connection
+package metaorm
 
 import (
 	"gorm.io/gorm"

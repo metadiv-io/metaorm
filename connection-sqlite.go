@@ -1,4 +1,4 @@
-package connection
+package metaorm
 
 import (
 	"github.com/metadiv-io/metaorm/internal/database"
@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// SQLite returns a new database connection for SQLite.
 func SQLite(path string, silent ...bool) (*database.DB, error) {
 	gormDB, err := gorm.Open(sqlite.Open(path), setupGormConfig(silent...))
 	if err != nil {
@@ -14,6 +15,7 @@ func SQLite(path string, silent ...bool) (*database.DB, error) {
 	return database.New(gormDB), nil
 }
 
+// SqliteMemory returns a new database connection for SQLite in-memory.
 func SqliteMemory() (*database.DB, error) {
 	return SQLite("file::memory:?cache=shared&busy_timeout=5000")
 }

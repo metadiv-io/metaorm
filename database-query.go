@@ -1,6 +1,6 @@
 package metaorm
 
-import "github.com/metadiv-io/metaorm/internal/query"
+import "github.com/metadiv-io/metaorm/query"
 
 // Query consumes the query and returns a new DB instance with the where clause applied.
 func (d *DB) Query(query *query.Query) *DB {

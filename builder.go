@@ -3,7 +3,7 @@ package metaorm
 import (
 	"github.com/metadiv-io/metaorm/internal/builder"
 	"github.com/metadiv-io/metaorm/internal/operator"
-	"github.com/metadiv-io/metaorm/internal/query"
+	"github.com/metadiv-io/metaorm/query"
 )
 
 // NewAndQueryBuilder returns a new and query builder.

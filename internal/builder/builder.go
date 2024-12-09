@@ -2,7 +2,7 @@ package builder
 
 import (
 	"github.com/metadiv-io/metaorm/internal/operator"
-	"github.com/metadiv-io/metaorm/internal/query"
+	"github.com/metadiv-io/metaorm/query"
 )
 
 // QueryBuilder is a builder for building queries.

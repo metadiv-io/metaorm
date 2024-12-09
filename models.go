@@ -1,7 +1,7 @@
 package metaorm
 
 import (
-	"github.com/metadiv-io/metaorm/internal/query"
+	"github.com/metadiv-io/metaorm/query"
 )
 
 // Page is a pagination model.

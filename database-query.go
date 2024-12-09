@@ -1,8 +1,8 @@
-package database
+package metaorm
 
 import "github.com/metadiv-io/metaorm/internal/query"
 
-// Query consumes the query and returns a new database.DB instance with the where clause applied.
+// Query consumes the query and returns a new DB instance with the where clause applied.
 func (d *DB) Query(query *query.Query) *DB {
 	if query == nil {
 		return d
@@ -10,7 +10,7 @@ func (d *DB) Query(query *query.Query) *DB {
 	stm, values := query.Build()
 	gormDB := d.GORM
 	gormDB = gormDB.Where(stm, values...)
-	return New(gormDB)
+	return NewDB(gormDB)
 }
 
 // Eq returns a new query with the equal operator for the given field and value.

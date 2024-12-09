@@ -1,8 +1,8 @@
-package database
+package metaorm
 
 import "gorm.io/gorm"
 
-func New(db *gorm.DB) *DB {
+func NewDB(db *gorm.DB) *DB {
 	return &DB{GORM: db}
 }
 
@@ -18,17 +18,17 @@ func (db *DB) AutoMigrate(models ...any) error {
 
 // Begin starts a new transaction.
 func (db *DB) Begin() *DB {
-	return New(db.GORM.Begin())
+	return NewDB(db.GORM.Begin())
 }
 
 // Rollback rolls back the transaction.
 func (db *DB) Rollback() *DB {
-	return New(db.GORM.Rollback())
+	return NewDB(db.GORM.Rollback())
 }
 
 // Commit commits the transaction.
 func (db *DB) Commit() *DB {
-	return New(db.GORM.Commit())
+	return NewDB(db.GORM.Commit())
 }
 
 // Preload preloads the given associations.
@@ -37,7 +37,7 @@ func (db *DB) Preload(associations ...string) *DB {
 	for _, field := range associations {
 		gormDB = gormDB.Preload(field)
 	}
-	return New(gormDB)
+	return NewDB(gormDB)
 }
 
 // Joins joins the given associations.
@@ -46,15 +46,15 @@ func (db *DB) Joins(associations ...string) *DB {
 	for _, field := range associations {
 		gormDB = gormDB.Joins(field)
 	}
-	return New(gormDB)
+	return NewDB(gormDB)
 }
 
 // Omit omits the given fields.
 func (db *DB) Omit(fields ...string) *DB {
-	return New(db.GORM.Omit(fields...))
+	return NewDB(db.GORM.Omit(fields...))
 }
 
 // Unscoped returns a new DB instance with the unscoped mode.
 func (db *DB) Unscoped() *DB {
-	return New(db.GORM.Unscoped())
+	return NewDB(db.GORM.Unscoped())
 }

@@ -8,8 +8,6 @@ import (
 	"github.com/metadiv-io/metaorm/internal/operator"
 )
 
-var METAORM_ENCRYPT_KEY = os.Getenv("METAORM_ENCRYPT_KEY")
-
 type Query struct {
 	Field     string
 	Operator  operator.Operator
@@ -43,7 +41,7 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 
 func (q *Query) getField(field string, encrypted bool) string {
 	if encrypted {
-		return "AES_DECRYPT(" + field + ", '" + METAORM_ENCRYPT_KEY + "')"
+		return "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
 	}
 	return field
 }

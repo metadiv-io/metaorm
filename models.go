@@ -27,6 +27,7 @@ func (p *Page) Consume(db *DB) *DB {
 }
 
 // Sort is a sort model.
+// add "*" to the field to sort by encrypted field
 type Sort struct {
 	Field string `json:"field" form:"field"`
 	Asc   bool   `json:"asc" form:"asc"`

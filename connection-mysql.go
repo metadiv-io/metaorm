@@ -12,6 +12,8 @@ func MySQL(host, port, username, password, databaseName string, silent ...bool) 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)", username, password, host, port)
 	if databaseName != "" {
 		dsn += fmt.Sprintf("/%s", databaseName)
+	} else {
+		dsn += "/"
 	}
 	dsn += "?charset=utf8mb4&parseTime=True&loc=Local"
 	gormDB, err := gorm.Open(

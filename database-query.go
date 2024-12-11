@@ -14,23 +14,15 @@ func (d *DB) Query(query *query.Query) *DB {
 }
 
 // Eq returns a new query with the equal operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) Eq(field string, value any) *query.Query {
 	return query.Eq(field, value)
 }
 
-// DecryptedEq returns a new query with the equal operator for the given field and value.
-func (db *DB) DecryptedEq(field string, value any) *query.Query {
-	return query.DecryptedEq(field, value)
-}
-
 // Neq returns a new query with the not equal operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) Neq(field string, value any) *query.Query {
 	return query.Neq(field, value)
-}
-
-// DecryptedNeq returns a new query with the not equal operator for the given field and value.
-func (db *DB) DecryptedNeq(field string, value any) *query.Query {
-	return query.DecryptedNeq(field, value)
 }
 
 // Gt returns a new query with the greater than operator for the given field and value.
@@ -54,63 +46,39 @@ func (db *DB) Lte(field string, value any) *query.Query {
 }
 
 // Like returns a new query with the like operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) Like(field string, value any) *query.Query {
 	return query.Like(field, value)
 }
 
-// DecryptedLike returns a new query with the like operator for the given field and value.
-func (db *DB) DecryptedLike(field string, value any) *query.Query {
-	return query.DecryptedLike(field, value)
-}
-
 // NotLike returns a new query with the not like operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) NotLike(field string, value any) *query.Query {
 	return query.NotLike(field, value)
 }
 
-// DecryptedNotLike returns a new query with the not like operator for the given field and value.
-func (db *DB) DecryptedNotLike(field string, value any) *query.Query {
-	return query.DecryptedNotLike(field, value)
-}
-
 // Similar returns a new query with the similar operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) Similar(field string, value any) *query.Query {
 	return query.Similar(field, value)
 }
 
-// DecryptedSimilar returns a new query with the similar operator for the given field and value.
-func (db *DB) DecryptedSimilar(field string, value any) *query.Query {
-	return query.DecryptedSimilar(field, value)
-}
-
 // NotSimilar returns a new query with the not similar operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) NotSimilar(field string, value any) *query.Query {
 	return query.NotSimilar(field, value)
 }
 
-// DecryptedNotSimilar returns a new query with the not similar operator for the given field and value.
-func (db *DB) DecryptedNotSimilar(field string, value any) *query.Query {
-	return query.DecryptedNotSimilar(field, value)
-}
-
 // In returns a new query with the in operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) In(field string, value any) *query.Query {
 	return query.In(field, value)
 }
 
-// DecryptedIn returns a new query with the in operator for the given field and value.
-func (db *DB) DecryptedIn(field string, value any) *query.Query {
-	return query.DecryptedIn(field, value)
-}
-
 // NotIn returns a new query with the not in operator for the given field and value.
+// If the field is prefixed with a *, it will be decrypted.
 func (db *DB) NotIn(field string, value ...any) *query.Query {
 	return query.NotIn(field, value...)
-}
-
-// DecryptedNotIn returns a new query with the not in operator for the given field and value.
-func (db *DB) DecryptedNotIn(field string, value ...any) *query.Query {
-	return query.DecryptedNotIn(field, value...)
 }
 
 // IsNull returns a new query with the is null operator for the given field.

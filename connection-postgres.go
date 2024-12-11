@@ -9,12 +9,12 @@ import (
 
 // Postgres returns a new database connection for Postgres.
 func Postgres(host, port, username, password, databaseName string, silent ...bool) (*DB, error) {
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, username, password)
+	if databaseName != "" {
+		dsn += fmt.Sprintf(" dbname=%s", databaseName)
+	}
 	gormDB, err := gorm.Open(
-		postgres.Open(
-			fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-				host, port, username, databaseName, password,
-			),
-		),
+		postgres.Open(dsn),
 		setupGormConfig(silent...),
 	)
 	if err != nil {

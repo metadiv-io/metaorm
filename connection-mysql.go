@@ -9,12 +9,13 @@ import (
 
 // MySQL returns a new database connection for MySQL.
 func MySQL(host, port, username, password, databaseName string, silent ...bool) (*DB, error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)", username, password, host, port)
+	if databaseName != "" {
+		dsn += fmt.Sprintf("/%s", databaseName)
+	}
+	dsn += "?charset=utf8mb4&parseTime=True&loc=Local"
 	gormDB, err := gorm.Open(
-		mysql.Open(
-			fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-				username, password, host, port, databaseName,
-			),
-		),
+		mysql.Open(dsn),
 		setupGormConfig(silent...),
 	)
 	if err != nil {

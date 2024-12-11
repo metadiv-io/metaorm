@@ -1,6 +1,9 @@
 package metaorm
 
 import (
+	"os"
+	"strings"
+
 	"github.com/metadiv-io/metaorm/query"
 )
 
@@ -33,10 +36,19 @@ type Sort struct {
 func (s *Sort) Consume(db *DB) *DB {
 	gormDB := db.GORM
 	if s.Field != "" {
-		if s.Asc {
-			gormDB = gormDB.Order(query.SafeField(s.Field) + " ASC")
+		if strings.HasPrefix(s.Field, "*") {
+			s.Field = strings.TrimPrefix(s.Field, "*")
+			if s.Asc {
+				gormDB = gormDB.Order("AES_DECRYPT(" + query.SafeField(s.Field) + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "') ASC")
+			} else {
+				gormDB = gormDB.Order("AES_DECRYPT(" + query.SafeField(s.Field) + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "') DESC")
+			}
 		} else {
-			gormDB = gormDB.Order(query.SafeField(s.Field) + " DESC")
+			if s.Asc {
+				gormDB = gormDB.Order(query.SafeField(s.Field) + " ASC")
+			} else {
+				gormDB = gormDB.Order(query.SafeField(s.Field) + " DESC")
+			}
 		}
 	}
 	return NewDB(gormDB)

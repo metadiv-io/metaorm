@@ -77,8 +77,8 @@ func (db *DB) In(field string, value any) *query.Query {
 
 // NotIn returns a new query with the not in operator for the given field and value.
 // If the field is prefixed with a *, it will be decrypted.
-func (db *DB) NotIn(field string, value ...any) *query.Query {
-	return query.NotIn(field, value...)
+func (db *DB) NotIn(field string, value any) *query.Query {
+	return query.NotIn(field, value)
 }
 
 // IsNull returns a new query with the is null operator for the given field.

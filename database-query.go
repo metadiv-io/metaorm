@@ -71,13 +71,13 @@ func (db *DB) NotSimilar(field string, value any) *query.Query {
 
 // In returns a new query with the in operator for the given field and value.
 // If the field is prefixed with a *, it will be decrypted.
-func (db *DB) In(field string, value any) *query.Query {
+func (db *DB) In(field string, value []any) *query.Query {
 	return query.In(field, value)
 }
 
 // NotIn returns a new query with the not in operator for the given field and value.
 // If the field is prefixed with a *, it will be decrypted.
-func (db *DB) NotIn(field string, value any) *query.Query {
+func (db *DB) NotIn(field string, value []any) *query.Query {
 	return query.NotIn(field, value)
 }
 

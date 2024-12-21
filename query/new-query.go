@@ -82,7 +82,7 @@ func NotSimilar(field string, value any) *Query {
 	}
 }
 
-func In(field string, value any) *Query {
+func In(field string, value []any) *Query {
 	return &Query{
 		Field:    SafeField(field),
 		Operator: operator.In(),
@@ -90,7 +90,7 @@ func In(field string, value any) *Query {
 	}
 }
 
-func NotIn(field string, value any) *Query {
+func NotIn(field string, value []any) *Query {
 	return &Query{
 		Field:    SafeField(field),
 		Operator: operator.NotIn(),

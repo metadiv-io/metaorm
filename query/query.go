@@ -29,8 +29,11 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 		stm = q.getField(query.Field) + " " + query.Operator.Operator + " (" + strings.TrimRight(strings.Repeat("?,", len(query.Value.([]any))), ",") + ")"
 		values = append(values, query.Value.([]any)...)
 	} else if query.Operator.IsSimilar() || query.Operator.IsNotSimilar() {
-		stm = q.getField(query.Field) + " " + operator.Like().Operator + " ?"
-		values = append(values, fmt.Sprintf("%%%s%%", query.Value))
+		stm = "LOWER(" + q.getField(query.Field) + ") " + operator.Like().Operator + " LOWER(?)"
+		values = append(values, fmt.Sprintf("%%%s%%", strings.ToLower(fmt.Sprint(query.Value))))
+	} else if query.Operator.IsLike() || query.Operator.IsNotLike() {
+		stm = "LOWER(" + q.getField(query.Field) + ") " + query.Operator.Operator + " LOWER(?)"
+		values = append(values, strings.ToLower(fmt.Sprint(query.Value)))
 	} else {
 		stm = q.getField(query.Field) + " " + query.Operator.Operator + " ?"
 		values = append(values, query.Value)

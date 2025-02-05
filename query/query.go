@@ -26,24 +26,27 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 	} else if query.Operator.IsNull() || query.Operator.IsNotNull() {
 		stm = query.Field + " " + query.Operator.Operator
 	} else if query.Operator.IsIn() || query.Operator.IsNotIn() {
-		stm = q.getField(query.Field) + " " + query.Operator.Operator + " (" + strings.TrimRight(strings.Repeat("?,", len(query.Value.([]any))), ",") + ")"
+		stm = q.getField(query.Field, false) + " " + query.Operator.Operator + " (" + strings.TrimRight(strings.Repeat("?,", len(query.Value.([]any))), ",") + ")"
 		values = append(values, query.Value.([]any)...)
 	} else if query.Operator.IsSimilar() || query.Operator.IsNotSimilar() {
-		stm = "LOWER(" + q.getField(query.Field) + ") " + operator.Like().Operator + " LOWER(?)"
+		stm = q.getField(query.Field, true) + " " + operator.Like().Operator + " LOWER(?)"
 		values = append(values, fmt.Sprintf("%%%s%%", strings.ToLower(fmt.Sprint(query.Value))))
 	} else if query.Operator.IsLike() || query.Operator.IsNotLike() {
-		stm = "LOWER(" + q.getField(query.Field) + ") " + query.Operator.Operator + " LOWER(?)"
+		stm = q.getField(query.Field, true) + query.Operator.Operator + " LOWER(?)"
 		values = append(values, strings.ToLower(fmt.Sprint(query.Value)))
 	} else {
-		stm = q.getField(query.Field) + " " + query.Operator.Operator + " ?"
+		stm = q.getField(query.Field, false) + " " + query.Operator.Operator + " ?"
 		values = append(values, query.Value)
 	}
 	return stm, values
 }
 
-func (q *Query) getField(field string) string {
+func (q *Query) getField(field string, lower bool) string {
 	if strings.HasPrefix(field, "*") {
 		field = strings.TrimPrefix(field, "*")
+		if lower {
+			return "LOWER(AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "'))"
+		}
 		return "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
 	}
 	return field

@@ -35,7 +35,6 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 			stm = q.getField(query.Field, true) + " " + operator.Like().Operator + " ?"
 		}
 		searchValue := "%" + strings.ToLower(fmt.Sprintf("%v", query.Value)) + "%"
-		fmt.Printf("Search value: %s\n", searchValue)
 		values = append(values, searchValue)
 	} else if query.Operator.IsLike() || query.Operator.IsNotLike() {
 		stm = q.getField(query.Field, true) + " " + query.Operator.Operator + " ?"

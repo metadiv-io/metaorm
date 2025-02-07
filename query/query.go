@@ -34,7 +34,7 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 		} else {
 			stm = q.getField(query.Field, true) + " " + operator.Like().Operator + " ?"
 		}
-		values = append(values, fmt.Sprintf("%%%s%%", strings.ToLower(fmt.Sprintf("%v", query.Value))))
+		values = append(values, "%"+strings.ToLower(fmt.Sprintf("%v", query.Value))+"%")
 	} else if query.Operator.IsLike() || query.Operator.IsNotLike() {
 		stm = q.getField(query.Field, true) + " " + query.Operator.Operator + " ?"
 		values = append(values, strings.ToLower(fmt.Sprintf("%v", query.Value)))
@@ -48,11 +48,10 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 func (q *Query) getField(field string, lower bool) string {
 	if strings.HasPrefix(field, "*") {
 		field = strings.TrimPrefix(field, "*")
-		decryptedField := "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
 		if lower {
-			return "LOWER(" + decryptedField + ")"
+			return "LOWER(AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "'))"
 		}
-		return decryptedField
+		return "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
 	}
 	if lower {
 		return "LOWER(" + field + ")"

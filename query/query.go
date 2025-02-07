@@ -50,10 +50,11 @@ func (q *Query) build(query *Query, values []any) (string, []any) {
 func (q *Query) getField(field string, lower bool) string {
 	if strings.HasPrefix(field, "*") {
 		field = strings.TrimPrefix(field, "*")
+		decryptedField := "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
 		if lower {
-			return "LOWER(AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "'))"
+			return "LOWER(CONVERT(" + decryptedField + " USING utf8))"
 		}
-		return "AES_DECRYPT(" + field + ", '" + os.Getenv("METAORM_ENCRYPT_KEY") + "')"
+		return decryptedField
 	}
 	if lower {
 		return "LOWER(" + field + ")"
